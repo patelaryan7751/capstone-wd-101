@@ -35,6 +35,34 @@ const displayEntries = () => {
   details.innerHTML = table;
 };
 
+const getAge = (dateString) => {
+  let today = new Date();
+  let birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  let m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+const ageValidation = (dateString) => {
+  let userAge = getAge(dateString);
+  if (userAge > 18 && userAge < 55) {
+    return true;
+  }
+  return false;
+};
+
+const errmsgDisplay = (value) => {
+  if (value === true) {
+    document.getElementById("errordob").textContent =
+      "Your age should be between 18 and 55 !";
+  } else {
+    document.getElementById("errordob").textContent = "";
+  }
+};
+
 const saveUserForm = (event) => {
   event.preventDefault();
   const name = document.getElementById("name").value;
@@ -50,9 +78,14 @@ const saveUserForm = (event) => {
     dob,
     acceptTermsAndConditions,
   };
-  userEntries.push(userDetails);
-  localStorage.setItem("user-entries", JSON.stringify(userEntries));
-  displayEntries();
+  if (ageValidation(dob)) {
+    errmsgDisplay(false);
+    userEntries.push(userDetails);
+    localStorage.setItem("user-entries", JSON.stringify(userEntries));
+    displayEntries();
+  } else {
+    errmsgDisplay(true);
+  }
 };
 
 let form = document.getElementById("user_form");

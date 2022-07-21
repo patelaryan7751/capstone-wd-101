@@ -62,6 +62,13 @@ const errmsgDisplay = (value) => {
     document.getElementById("errordob").textContent = "";
   }
 };
+const emptyFormFields=()=>{
+document.getElementById("name").value="";
+document.getElementById("email").value="";
+document.getElementById("password").value="";
+document.getElementById("dob").value="";
+document.getElementById("acceptTerms").checked = false;
+}
 
 const saveUserForm = (event) => {
   event.preventDefault();
@@ -83,6 +90,7 @@ const saveUserForm = (event) => {
     userEntries.push(userDetails);
     localStorage.setItem("user-entries", JSON.stringify(userEntries));
     displayEntries();
+    emptyFormFields();
   } else {
     errmsgDisplay(true);
   }
